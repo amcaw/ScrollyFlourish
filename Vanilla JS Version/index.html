@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrolly Vanilla - Interactive Story</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Welcome to Vanilla Scrolly</h1>
+    <p>This is the vanilla JavaScript version of the SvelteKit scrolly project</p>
+
+    <section id="scrolly-container" class="section-container">
+        <div class="foreground" id="foreground">
+            <!-- Steps will be dynamically added here -->
+        </div>
+        
+        <div class="sticky-background">
+            <iframe 
+                id="flourish-iframe" 
+                title="Interactive or visual content" 
+                class="flourish-embed" 
+                frameborder="0" 
+                scrolling="no" 
+                style="width:100%;height:100vh;pointer-events:none;">
+            </iframe>
+        </div>
+    </section>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
