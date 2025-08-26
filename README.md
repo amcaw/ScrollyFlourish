@@ -35,4 +35,4 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-This code is preconfigured with adapter-static but you can use another one here [adapter](https://svelte.dev/docs/kit/adapters) depending on your target environment.
+This code is preconfigured with adapter-static but you can use another [adapter here](https://svelte.dev/docs/kit/adapters) depending on your target environment.
