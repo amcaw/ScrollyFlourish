@@ -1,4 +1,9 @@
 <script lang="ts">
+
+//Inspired by https://www.linkedin.com/pulse/so-you-want-code-data-story-kontinentalist/
+//And by this https://www.newline.co/courses/better-data-visualizations-with-svelte
+//And also by this https://github.com/jsonkao/svelte-scrollama
+
 import { onMount, onDestroy } from 'svelte';
 
   let activeStepIndex = 0;
