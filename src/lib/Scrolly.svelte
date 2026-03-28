@@ -6,10 +6,11 @@
 
 import { onMount, onDestroy } from 'svelte';
 
-  let activeStepIndex = 0;
+  let { flourishID = 3279466 }: { flourishID?: number } = $props();
+
+  let activeStepIndex = $state(0);
   let observer: IntersectionObserver;
   let scrollyRef: HTMLElement;
-  let flourishID = 3279466;
 
   let stepsData = [
     { "text": "First <mark>step</mark> text" },
