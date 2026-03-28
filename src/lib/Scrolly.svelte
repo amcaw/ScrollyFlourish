@@ -9,25 +9,24 @@ import { onMount, onDestroy } from 'svelte';
   let activeStepIndex = 0;
   let observer: IntersectionObserver;
   let scrollyRef: HTMLElement;
-  let flourishID = 3279466; 
-	
+  let flourishID = 3279466;
+
   let stepsData = [
     { "text": "First <mark>step</mark> text" },
     { "text": "Second step text" },
     { "text": "Third step text" },
-	{ "text": "Fourth step text" },
-  ];
+    ];
 
   onMount(() => {
     observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const { target, isIntersecting } = entry;
         const index = Array.from(scrollyRef.querySelectorAll('.step')).indexOf(target);
-        if (isIntersecting) {
+        if (isIntersecting && index !== activeStepIndex) {
           activeStepIndex = index;
         }
       });
-    }, { threshold: 0.6 });
+    }, { threshold: 0.5 });
 
     const stepElements = scrollyRef.querySelectorAll('.step');
     stepElements.forEach(el => observer.observe(el));
@@ -42,16 +41,16 @@ import { onMount, onDestroy } from 'svelte';
 
 <section bind:this={scrollyRef} class="section-container">
 
-	<div class="foreground">
+  <div class="foreground">
     {#each stepsData as { text }, index}
       <div class="step" data-step={index}>
         <div class="step-content">
-          <p>{@html text}</p> 
+          <p>{@html text}</p>
         </div>
       </div>
     {/each}
   </div>
-	
+
   <div class="sticky-background">
       <iframe src={`https://flo.uri.sh/story/${flourishID}/embed#slide-${activeStepIndex}`} title="Interactive or visual content" class="flourish-embed" frameborder="0" scrolling="no" style="width:100%;height:100vh;pointer-events:none;"></iframe>
   </div>
@@ -69,8 +68,8 @@ import { onMount, onDestroy } from 'svelte';
     text-align: center;
     transition: background 100ms;
     display: flex;
-    flex-direction: row; 
-		
+    flex-direction: row;
+
   }
 
   .sticky-background {
@@ -87,10 +86,10 @@ import { onMount, onDestroy } from 'svelte';
     flex-direction: column;
     align-items: center;
     flex: 0 1 40%;
+    pointer-events: none;
   }
 
   .step {
-    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -98,6 +97,16 @@ import { onMount, onDestroy } from 'svelte';
     position: relative;
     z-index: 2;
     width: 100%;
+    margin-bottom: 100vh;
+  }
+
+  .step:first-child {
+    margin-top: 40vh;
+  }
+
+  .step:last-child {
+    margin-bottom: 0;
+    padding-bottom: 100vh;
   }
 
   .step-content {
@@ -112,9 +121,10 @@ import { onMount, onDestroy } from 'svelte';
     z-index: 10;
     font-size: 1rem;
     text-align: left;
-    width: 100%; 
-    max-width: 500px; 
+    width: 100%;
+    max-width: 500px;
     margin: auto;
+    pointer-events: auto;
   }
 
   @media screen and (max-width: 768px) {

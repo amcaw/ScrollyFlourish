@@ -1,38 +1,60 @@
-# sv
+# ScrollyFlourish
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A reusable scrollytelling component built with SvelteKit that embeds [Flourish](https://flourish.studio/) stories and drives slide navigation through scroll-based interaction.
 
-## Creating a project
+## What it does
 
-If you're seeing this, you've probably already done this step. Congrats!
+As the reader scrolls through text panels, an `IntersectionObserver` detects which step is visible and updates the embedded Flourish story to the corresponding slide. The Flourish iframe uses the `#slide-N` hash fragment to trigger its built-in slide transitions.
 
-```sh
-# create a new project in the current directory
-npx sv create
+The layout places text steps on one side and a sticky Flourish embed on the other, creating a classic scrollytelling experience without requiring any Flourish API key or JavaScript SDK.
 
-# create a new project in my-app
-npx sv create my-app
+## Project structure
+
+```
+src/
+├── app.css                  # Global styles (CSS variables, typography, base reset)
+├── app.html                 # HTML shell (Montserrat font loading)
+├── lib/
+│   └── Scrolly.svelte       # The scrollytelling component
+└── routes/
+    ├── +layout.svelte       # Root layout (imports global CSS)
+    └── +page.svelte         # Demo page with article text + Scrolly component
 ```
 
-## Developing
+## How the Scrolly component works
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+1. **Steps** — An array of `stepsData` objects defines the text content for each scroll panel.
+2. **IntersectionObserver** — On mount, each `.step` element is observed. When a step crosses the visibility threshold (50%), `activeStepIndex` updates.
+3. **Flourish embed** — The iframe `src` is reactively bound to `activeStepIndex`, appending `#slide-{index}` to the Flourish story URL. Flourish handles the animated transition between slides internally.
+4. **Sticky layout** — The Flourish iframe sits in a `position: sticky` container so it remains visible while the reader scrolls through the steps.
+
+## Customisation
+
+- **Flourish story ID** — Change the `flourishID` variable in `Scrolly.svelte` to point to any public Flourish story.
+- **Steps content** — Edit the `stepsData` array. Each entry supports HTML via `{@html}`.
+- **Theming** — CSS variables in `src/app.css` control colours, typography, and spacing.
+
+## Known limitation
+
+Changing the Flourish iframe `src` hash adds entries to the browser's joint session history. This means pressing the browser back button will step through each slide before navigating to the previous page. This is a fundamental constraint of cross-origin iframes — there is no reliable way to change an iframe's hash without creating history entries when the iframe is on a different origin.
+
+## Getting started
 
 ```sh
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
 ## Building
-
-To create a production version of your app:
 
 ```sh
 npm run build
 ```
 
-You can preview the production build with `npm run preview`.
+The project uses `adapter-static` for static site generation. You can switch to another [SvelteKit adapter](https://svelte.dev/docs/kit/adapters) depending on your deployment target.
 
-This code is preconfigured with adapter-static but you can use another [adapter here](https://svelte.dev/docs/kit/adapters) depending on your target environment.
+Preview the production build with:
+
+```sh
+npm run preview
+```
